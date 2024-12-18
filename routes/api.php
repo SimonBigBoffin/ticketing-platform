@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\StatsController;
+use App\Http\Controllers\API\TicketController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +19,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Public accessible api endpoints
+
+Route::get('/stats', [StatsController::class, 'index']);
+
+Route::get('/tickets/open', [TicketController::class, 'index']);
+Route::get('/tickets/closed', []);
+
+Route::get('/users/{email}/tickets', []);

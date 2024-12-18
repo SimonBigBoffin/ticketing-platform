@@ -20,10 +20,10 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('welcome');
+
+Route::get('/ticket/{ticket}', [App\Http\Controllers\TicketController::class, 'show'])->name('ticket.show');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
