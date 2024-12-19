@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
 
         foreach(range(1, 10) as $i) {
             User::factory()
-                ->has(Ticket::factory()->count(rand(1, 20)))
+                ->has(Ticket::factory()->randomCreated()->count(rand(1, 20)))
                 ->create();
         }
 

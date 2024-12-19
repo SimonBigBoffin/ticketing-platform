@@ -3,24 +3,25 @@ import Pagination from "@/Components/Pagination.jsx";
 import {useEffect, useState} from "react";
 import dayjs from "dayjs";
 
-export default function TicketTable() {
+export default function TicketTable( { tickets } ) {
 
-    const [tickets, setTickets] = useState([]);
-    const [links, setLinks] = useState([]);
+    // const [tickets, setTickets] = useState([]);
+    // const [links, setLinks] = useState([]);
+    //
+    //
+    // useEffect(() => {
+    //     fetch('/api/tickets/open')
+    //         .then(r => r.json() )
+    //         .then(data => {
+    //             console.log(data, data.data, data.links);
+    //             setTickets(data.data);
+    //             setLinks(data.links);
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         })
+    // }, [])
 
-
-    useEffect(() => {
-        fetch('/api/tickets/open')
-            .then(r => r.json() )
-            .then(data => {
-                console.log(data, data.data, data.links);
-                setTickets(data.data);
-                setLinks(data.links);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }, [])
 
     return (
         <div className="px-4 sm:px-6">
@@ -66,7 +67,7 @@ export default function TicketTable() {
                                 </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200 bg-white">
-                                {tickets.map((ticket) => (
+                                {tickets.data.map((ticket) => (
                                     <tr key={ticket.id}>
                                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                             {ticket.user.name}
@@ -89,7 +90,7 @@ export default function TicketTable() {
                                 ))}
                                 </tbody>
                             </table>
-                            <Pagination links={links} />
+                            <Pagination tickets={tickets} />
                         </div>
                     </div>
                 </div>

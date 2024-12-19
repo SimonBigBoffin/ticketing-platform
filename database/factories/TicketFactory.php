@@ -19,7 +19,17 @@ class TicketFactory extends Factory
         return [
             'subject' => fake()->sentence(),
             'content' => fake()->paragraph(),
-
         ];
+    }
+
+    public function randomCreated(): TicketFactory|Factory
+    {
+        $createdAt = fake()->dateTimeBetween('-30 days', 'now');
+        return $this->state(function (array $attributes) use ($createdAt) {
+            return [
+                'created_at' => $createdAt,
+                'updated_at' => $createdAt,
+            ];
+        });
     }
 }

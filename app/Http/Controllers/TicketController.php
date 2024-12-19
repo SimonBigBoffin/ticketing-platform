@@ -12,7 +12,7 @@ class TicketController extends Controller
     public function show(Ticket $ticket)
     {
         return Inertia::render('Ticket', [
-            'ticket' => $ticket
+            'ticket' => $ticket->load('user'),
         ]);
     }
 
