@@ -1,21 +1,23 @@
-import {Link, useForm} from "@inertiajs/react";
+import {Link, useForm, usePoll} from "@inertiajs/react";
 import Pagination from "@/Components/Pagination.jsx";
 import {useEffect, useState} from "react";
 import dayjs from "dayjs";
 
 export default function TicketTable( { tickets } ) {
 
+
+
+    usePoll(2000);
+
     // const [tickets, setTickets] = useState([]);
     // const [links, setLinks] = useState([]);
     //
     //
     // useEffect(() => {
-    //     fetch('/api/tickets/open')
+    //     fetch('/api/tickets')
     //         .then(r => r.json() )
     //         .then(data => {
-    //             console.log(data, data.data, data.links);
-    //             setTickets(data.data);
-    //             setLinks(data.links);
+    //             console.log(data);
     //         })
     //         .catch(err => {
     //             console.log(err);

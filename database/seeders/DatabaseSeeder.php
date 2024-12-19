@@ -16,9 +16,17 @@ class DatabaseSeeder extends Seeder
     {
 
         foreach(range(1, 10) as $i) {
-            User::factory()
-                ->has(Ticket::factory()->randomCreated()->count(rand(1, 20)))
+            $ticketCount = rand(1, 20);
+
+            $user = User::factory()
                 ->create();
+
+            foreach(range(1, $ticketCount) as $j) {
+                Ticket::factory()->randomCreated()->create([
+                    'user_id' => $user->id,
+                ]);
+            }
+
         }
 
     }
