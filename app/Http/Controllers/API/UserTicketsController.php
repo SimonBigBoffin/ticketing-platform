@@ -4,21 +4,23 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserTicketsController extends Controller
 {
-    public function index(Request $request)
+    /**
+     * @throws \Exception
+     */
+    public function index(Request $request, $email = '')
     {
-
         $perPage = 3;
         $columns = ['*'];
         $pageName = 'page';
         $status = false;
-        $email = $request->input('email', '');
 
         if (empty($email)) {
-            return response()->json([]);
+            return response('', 404);
         }
 
         $page = $request->input('page', 1);
@@ -28,12 +30,15 @@ class UserTicketsController extends Controller
             $status = true;
         }
 
-        $tickets = Ticket::with(['user'])
-            ->where('status', $status)
-            ->latest()
-            ->paginate($perPage, $columns, $pageName, $page);
+        $user = User::with(['tickets'])->where('email', $email)->first();
 
+        //dd($user->tickets->paginate($perPage));
 
-        return response()->json($tickets);
+        if ($user) {
+            return response()->json($user->tickets->paginate($perPage));
+        }
+
+        return response()->json(['message' => 'No User on Record'], 404);
+
     }
 }

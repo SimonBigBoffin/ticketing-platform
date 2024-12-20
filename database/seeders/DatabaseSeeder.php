@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Helps with populating the database this 10 users with a random amount of tickets in the last 30 days
 
         foreach(range(1, 10) as $i) {
             $ticketCount = rand(1, 20);
@@ -22,7 +23,7 @@ class DatabaseSeeder extends Seeder
                 ->create();
 
             foreach(range(1, $ticketCount) as $j) {
-                Ticket::factory()->randomCreated()->create([
+                Ticket::factory()->randomlyCreated()->create([
                     'user_id' => $user->id,
                 ]);
             }
