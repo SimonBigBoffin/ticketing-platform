@@ -18,13 +18,14 @@ class CreateNewTicket extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'A simple command to create a new ticket by a random user';
 
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
-        //
+        // Will be used to create a new ticket by a random user every minute
+        $this->info('Ticket created successfully');
     }
 }

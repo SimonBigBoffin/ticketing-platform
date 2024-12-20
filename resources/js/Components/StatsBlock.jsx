@@ -7,7 +7,7 @@ const stats = [
     { name: 'Timestamp of the last ticket processed', stat: '00/00/00 00:00:00' },
 ]
 
-export default function StatsBlock({totalTickets, unprocessedTickets, lastProcessed}) {
+export default function StatsBlock({totalTickets, unprocessedTickets, lastProcessed, highestTicketUser}) {
 
     return (
         <div>
@@ -25,8 +25,8 @@ export default function StatsBlock({totalTickets, unprocessedTickets, lastProces
                     <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{lastProcessed}</dd>
                 </div>
             </dl>
-            <div className="mt-4 p-4 border rounded-md shadow bg-white">
-                Name & Email of the user with the highest number of submitted tickets
+            <div className="text-center font-bold text-2xl text-red-700 mt-4 p-4 border rounded-md shadow bg-white">
+                {highestTicketUser}
             </div>
         </div>
     )

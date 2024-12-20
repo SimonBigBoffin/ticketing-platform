@@ -14,10 +14,8 @@ class CreateNewTicketTest extends TestCase
     public function test_create_new_ticket_command(): void
     {
         // Call the artisan command to create a new ticket
-        $this->artisan('app:create-ticket')
+        $this->artisan('app:create-new-ticket')
             ->expectsOutput('Ticket created successfully')
             ->assertExitCode(0);
-
-
     }
 }

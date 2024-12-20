@@ -6,6 +6,7 @@ import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions
 import Processed from "@/Components/Processed.jsx";
 import Unprocessed from "@/Components/Unprocessed.jsx";
 import StatsBlock from "@/Components/StatsBlock.jsx";
+import dayjs from "dayjs";
 
 
 const people = [
@@ -22,11 +23,17 @@ export default function Welcome() {
     const [pageNumber, setPageNumber] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [statusFilter, setStatusFilter] = useState('open');
+    const [selectedPerson, setSelectedPerson] = useState(people[0]);
+    const [query, setQuery] = useState('');
 
+    // Stats
+    const [totalTickets, setTotalTickets] = useState(0);
+    const [unprocessedTickets, setUnprocessedTickets] = useState(0);
+    const [lastProcessed, setLastProcessed] = useState('00/00/00 00:00:00');
+    const [highestTicketUser, setHighestTicketUser] = useState('');
     // Check for updates
 
     const pageHasChanged = () => {
-
         const filterParams = new URLSearchParams();
         filterParams.append("page", pageNumber.toString());
         filterParams.append("status_filter", statusFilter);
@@ -39,15 +46,34 @@ export default function Welcome() {
             }).catch(err => {
             console.error(err.toString());
         });
-
     }
 
-    useEffect(pageHasChanged, [pageNumber]);
+    const fetchStats = () => {
+        fetch("/api/stats")
+            .then((response) => response.json())
+            .then((data) => {
+                setTotalTickets(data.total_tickets);
+                setUnprocessedTickets(data.unprocessed_tickets);
+                setLastProcessed(dayjs(data.last_ticket_processed.updated_at).format('DD/MM/YY HH:mm:ss'));
+                setHighestTicketUser(
+                    data.highest_ticket_user.user.name +
+                    ' (' + data.highest_ticket_user.user.email + ') with ' +
+                    data.highest_ticket_user.total_tickets + ' tickets'
+                );
+            }).catch(err => {
+                console.error(err.toString());
+            });
+    }
 
-    useEffect(pageHasChanged, [statusFilter]);
+    useEffect(() => { pageHasChanged(); fetchStats(); }, [pageNumber]);
 
-    const [selectedPerson, setSelectedPerson] = useState(people[0])
-    const [query, setQuery] = useState('')
+    useEffect(() => { pageHasChanged(); fetchStats(); }, [statusFilter]);
+
+    useEffect(() => {
+        if (selectedPerson.id > 0) {
+            console.log('Selected person: ', selectedPerson.name);
+        }
+    }, [selectedPerson]);
 
     const filteredPeople =
         query === ''
@@ -64,7 +90,12 @@ export default function Welcome() {
                 <div className="mt-8">
                     <h1 className="text-2xl font-bold text-center">Ticketing Platform</h1>
                     <div className="mt-4 mx-6 p-4 border rounded-md bg-gray-200">
-                        <StatsBlock></StatsBlock>
+                        <StatsBlock
+                            totalTickets={totalTickets}
+                            unprocessedTickets={unprocessedTickets}
+                            lastProcessed={lastProcessed}
+                            highestTicketUser={highestTicketUser}
+                        />
                     </div>
                     <div className="flex justify-between mx-6 mt-4 p-4 border rounded-md">
                         <div className="flex space-x-4">

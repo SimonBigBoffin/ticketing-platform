@@ -16,9 +16,6 @@ class ClosedTicketsTest extends TestCase
      */
     public function test_closed_tickets(): void
     {
-
-
-
         $response = $this->get('/api/tickets/closed');
 
         $response->assertStatus(200);

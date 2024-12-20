@@ -19,6 +19,8 @@ class TicketFactory extends Factory
         return [
             'subject' => fake()->sentence(),
             'content' => fake()->paragraph(),
+            'status' => false,
+            'user_id' => 0,
         ];
     }
 

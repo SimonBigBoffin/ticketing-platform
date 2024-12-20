@@ -24,6 +24,14 @@ class StatsController extends Controller
         $highest_ticket_user = null;
         $last_ticket_processed = null;
 
+        $highest_ticket_user = Ticket::with(['user'])->select('user_id')
+            ->selectRaw('count(*) as total_tickets')
+            ->groupBy('user_id')
+            ->orderBy('total_tickets', 'desc')
+            ->first();
+
+        $last_ticket_processed = Ticket::select('status','created_at', 'updated_at')->where('status', true)->latest()->first();
+
         return response()->json([
             'total_tickets' => $total_tickets,
             'unprocessed_tickets' => $unprocessed_tickets,

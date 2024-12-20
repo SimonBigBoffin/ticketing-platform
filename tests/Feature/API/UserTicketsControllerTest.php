@@ -9,43 +9,43 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class UserTicketsTest extends TestCase
+class UserTicketsControllerTest extends TestCase
 {
     use DatabaseTransactions;
 
     public function test_user_has_tickets(): void
     {
         $user = User::factory()->create();
-        Ticket::factory()->count(5)->create([
-            'user_id' => $user->id,
-        ]);
+        Ticket::factory()->count(10)->create(['user_id' => $user->id]);
 
-        $response = $this->get('/api/users/'.$user->email.'/tickets');
+        $response = $this->get('/api/users/'.$user->email.'/tickets?page=1');
 
         $response->assertStatus(200);
-        $response->assertJsonCount(3, 'data');
-
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => ['id', 'status', 'user_id', 'created_at', 'updated_at']
+            ],
+            'links'
+        ]);
+        $response->assertJsonCount(3, 'data'); // Assuming 5 items per page
     }
 
     public function test_user_has_no_tickets(): void
     {
         $user = User::factory()->create();
 
-        $response = $this->get('/api/users/'.$user->email.'/tickets');
+        $response = $this->get('/api/users/'.$user->email.'/tickets?page=1');
 
         $response->assertStatus(200);
         $response->assertJsonCount(0, 'data');
-
     }
 
     public function test_user_does_not_exist(): void
     {
         $email = 'simon@bigboffin.com';
 
-        $response = $this->get('/api/users/'.$email.'/tickets');
+        $response = $this->get('/api/users/'.$email.'/tickets?page=1');
 
         $response->assertStatus(404);
-
     }
-
 }
