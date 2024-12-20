@@ -5,9 +5,11 @@ import {useEffect, useState} from "react";
 import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/react";
 import Processed from "@/Components/Processed.jsx";
 import Unprocessed from "@/Components/Unprocessed.jsx";
+import StatsBlock from "@/Components/StatsBlock.jsx";
 
 
 const people = [
+    { id: 0, name: '-- Select User --' },
     { id: 1, name: 'Durward Reynolds' },
     { id: 2, name: 'Kenton Towne' },
     { id: 3, name: 'Therese Wunsch' },
@@ -61,6 +63,9 @@ export default function Welcome() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="mt-8">
                     <h1 className="text-2xl font-bold text-center">Ticketing Platform</h1>
+                    <div className="mt-4 mx-6 p-4 border rounded-md bg-gray-200">
+                        <StatsBlock></StatsBlock>
+                    </div>
                     <div className="flex justify-between mx-6 mt-4 p-4 border rounded-md">
                         <div className="flex space-x-4">
                             <button
@@ -94,21 +99,26 @@ export default function Welcome() {
                                     displayValue={(person) => person?.name}
                                 />
                                 <ComboboxButton
-                                    className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
+                                    className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
+                                >
                                     <ChevronUpDownIcon className="size-5 text-gray-400" aria-hidden="true"/>
                                 </ComboboxButton>
 
                                 {filteredPeople.length > 0 && (
                                     <ComboboxOptions
-                                        className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                                        className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
+                                    >
                                         {filteredPeople.map((person) => (
                                             <ComboboxOption
                                                 key={person.id}
                                                 value={person}
                                                 className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white data-[focus]:outline-none"
                                             >
-                                            <span
-                                                className="block truncate group-data-[selected]:font-semibold">{person.name}</span>
+                                                <span
+                                                    className="block truncate group-data-[selected]:font-semibold"
+                                                >
+                                                    {person.name}
+                                                </span>
 
                                                 <span
                                                     className="absolute inset-y-0 right-0 hidden items-center pr-4 text-indigo-600 group-data-[selected]:flex group-data-[focus]:text-white"
@@ -123,7 +133,9 @@ export default function Welcome() {
                         </Combobox>
                     </div>
                     <div className="flex items-center gap-4 mx-6 mt-4 p-4 border rounded-md">
-                        Filters: {statusFilter === 'close' ? ( <Processed></Processed> ) : ( <Unprocessed></Unprocessed> )}
+                        Filters:&nbsp;
+                            {selectedPerson.id > 0 ? selectedPerson.name : 'All Users'}&nbsp;
+                            {statusFilter === 'close' ? ( <Processed></Processed> ) : ( <Unprocessed></Unprocessed> )}
                     </div>
                     <DisplayTickets
                         tickets={tickets}

@@ -20,4 +20,11 @@ class Ticket extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function process(): void
+    {
+        $this->status = true;
+        $this->save();
+    }
+
 }
