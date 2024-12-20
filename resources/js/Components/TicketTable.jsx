@@ -1,29 +1,29 @@
 import {Link, useForm, usePoll} from "@inertiajs/react";
 import Pagination from "@/Components/Pagination.jsx";
-import {useEffect, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import dayjs from "dayjs";
 
-export default function TicketTable( { tickets } ) {
+function ShowPagination(tickets) {
 
+}
 
+export default function TicketTable({ tickets }) {
+    const [api_tickets, setTickets] = useState([]);
 
-    usePoll(2000);
-
-    // const [tickets, setTickets] = useState([]);
-    // const [links, setLinks] = useState([]);
-    //
-    //
-    // useEffect(() => {
-    //     fetch('/api/tickets')
-    //         .then(r => r.json() )
-    //         .then(data => {
-    //             console.log(data);
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //         })
-    // }, [])
-
+    usePoll(5000, {
+        onStart() {
+            console.log('onStart');
+            fetch('/api/tickets')
+                .then(r => r.json() )
+                .then(data => {
+                    console.log(data);
+                    setTickets(data);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+    });
 
     return (
         <div className="px-4 sm:px-6">
@@ -69,7 +69,7 @@ export default function TicketTable( { tickets } ) {
                                 </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200 bg-white">
-                                {tickets.data.map((ticket) => (
+                                {api_tickets.data?.map((ticket) => (
                                     <tr key={ticket.id}>
                                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                             {ticket.user.name}
@@ -92,7 +92,7 @@ export default function TicketTable( { tickets } ) {
                                 ))}
                                 </tbody>
                             </table>
-                            <Pagination tickets={tickets} />
+                            <Pagination tickets={api_tickets}></Pagination>
                         </div>
                     </div>
                 </div>
