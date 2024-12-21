@@ -26,5 +26,4 @@ class Ticket extends Model
         $this->status = true;
         $this->save();
     }
-
 }

@@ -4,10 +4,7 @@ namespace Tests\Feature\API;
 
 use App\Models\Ticket;
 use App\Models\User;
-use Database\Factories\TicketFactory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class OpenTicketsTest extends TestCase

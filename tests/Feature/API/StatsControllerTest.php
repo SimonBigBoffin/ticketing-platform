@@ -26,8 +26,8 @@ class StatsControllerTest extends TestCase
                 'last_ticket_processed' => ['updated_at'],
                 'highest_ticket_user' => [
                     'user' => ['name', 'email'],
-                    'total_tickets'
-                ]
+                    'total_tickets',
+                ],
             ]);
     }
 }

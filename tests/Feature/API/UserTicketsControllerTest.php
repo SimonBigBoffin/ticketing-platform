@@ -5,8 +5,6 @@ namespace Tests\Feature\API;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class UserTicketsControllerTest extends TestCase
@@ -23,9 +21,9 @@ class UserTicketsControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
-                '*' => ['id', 'status', 'user_id', 'created_at', 'updated_at']
+                '*' => ['id', 'status', 'user_id', 'created_at', 'updated_at'],
             ],
-            'links'
+            'links',
         ]);
         $response->assertJsonCount(3, 'data'); // Assuming 5 items per page
     }

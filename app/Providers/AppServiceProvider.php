@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-
-
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;

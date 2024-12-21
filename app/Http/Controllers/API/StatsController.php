@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
-use Illuminate\Http\Request;
 
 class StatsController extends Controller
 {
@@ -30,7 +29,7 @@ class StatsController extends Controller
             ->orderBy('total_tickets', 'desc')
             ->first();
 
-        $last_ticket_processed = Ticket::select('status','created_at', 'updated_at')->where('status', true)->latest()->first();
+        $last_ticket_processed = Ticket::select('status', 'created_at', 'updated_at')->where('status', true)->latest()->first();
 
         return response()->json([
             'total_tickets' => $total_tickets,
@@ -40,5 +39,4 @@ class StatsController extends Controller
         ]);
 
     }
-
 }

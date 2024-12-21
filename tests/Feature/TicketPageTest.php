@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class TicketPageTest extends TestCase
@@ -21,11 +19,11 @@ class TicketPageTest extends TestCase
         $user = User::factory()->create();
         $ticket = $user->tickets()->create([
             'subject' => 'Test ticket',
-            'content' => 'Test content'
+            'content' => 'Test content',
         ]);
 
         // Act
-        $response = $this->get('/ticket/' . $ticket->id);
+        $response = $this->get('/ticket/'.$ticket->id);
 
         // Assert
         $response->assertStatus(200);

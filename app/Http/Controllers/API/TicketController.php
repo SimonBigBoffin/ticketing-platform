@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
-
     public function index(Request $request)
     {
 
@@ -28,7 +27,6 @@ class TicketController extends Controller
             ->where('status', $status)
             ->latest()
             ->paginate($perPage, $columns, $pageName, $page);
-
 
         return response()->json($tickets);
     }
