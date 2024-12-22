@@ -18,7 +18,9 @@ const people = [
     { id: 5, name: 'Katelyn Rohan' },
 ]
 
-export default function Welcome() {
+export default function Welcome({ users }) {
+    const [people, setPeople] = useState(users);
+    console.log(people);
     const [tickets, setTickets] = useState([]);
     const [pageNumber, setPageNumber] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
