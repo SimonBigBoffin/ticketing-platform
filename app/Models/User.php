@@ -47,4 +47,18 @@ class User extends Authenticatable
     {
         return $this->hasMany(Ticket::class);
     }
+
+    public static function fetchDropdown(): array
+    {
+        $defaultOption = [
+            'id' => 0,
+            'name' => '-- Select User --',
+            'email' => '',
+        ];
+
+        $users = self::get(['id', 'name', 'email']);
+
+
+        return array_merge([$defaultOption], $users->toArray());
+    }
 }
