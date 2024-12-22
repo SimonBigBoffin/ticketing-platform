@@ -7,25 +7,17 @@ import Processed from "@/Components/Processed.jsx";
 import Unprocessed from "@/Components/Unprocessed.jsx";
 import StatsBlock from "@/Components/StatsBlock.jsx";
 import dayjs from "dayjs";
-
-
-const people = [
-    { id: 0, name: '-- Select User --' },
-    { id: 1, name: 'Durward Reynolds' },
-    { id: 2, name: 'Kenton Towne' },
-    { id: 3, name: 'Therese Wunsch' },
-    { id: 4, name: 'Benedict Kessler' },
-    { id: 5, name: 'Katelyn Rohan' },
-]
+import FilteredByUser from "@/Components/FilteredByUser.jsx";
 
 export default function Welcome({ users }) {
     const [people, setPeople] = useState(users);
-    console.log(people);
     const [tickets, setTickets] = useState([]);
     const [pageNumber, setPageNumber] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [statusFilter, setStatusFilter] = useState('open');
     const [selectedPerson, setSelectedPerson] = useState(people[0]);
+    const [btnActive, setBtnActive] = useState('bg-white text-indigo-600 border border-indigo-600');
+    const [btnText, setBtnText] = useState('Open Tickets');
     const [query, setQuery] = useState('');
 
     // Stats
@@ -33,21 +25,22 @@ export default function Welcome({ users }) {
     const [unprocessedTickets, setUnprocessedTickets] = useState(0);
     const [lastProcessed, setLastProcessed] = useState('00/00/00 00:00:00');
     const [highestTicketUser, setHighestTicketUser] = useState('');
-    // Check for updates
 
     const pageHasChanged = () => {
         const filterParams = new URLSearchParams();
         filterParams.append("page", pageNumber.toString());
         filterParams.append("status_filter", statusFilter);
+        filterParams.append('email', selectedPerson.email);
 
         fetch("/api/tickets?" + filterParams.toString())
             .then((response) => response.json())
             .then((data) => {
                 setTickets(data);
                 setTotalPages(data?.last_page);
+                console.log(data);
             }).catch(err => {
-            console.error(err.toString());
-        });
+                console.error(err.toString());
+            });
     }
 
     const fetchStats = () => {
@@ -67,22 +60,31 @@ export default function Welcome({ users }) {
             });
     }
 
-    useEffect(() => { pageHasChanged(); fetchStats(); }, [pageNumber]);
-
-    useEffect(() => { pageHasChanged(); fetchStats(); }, [statusFilter]);
-
-    useEffect(() => {
-        if (selectedPerson.id > 0) {
-            console.log('Selected person: ', selectedPerson.name);
-        }
-    }, [selectedPerson]);
-
     const filteredPeople =
         query === ''
             ? people
             : people.filter((person) => {
                 return person.name.toLowerCase().includes(query.toLowerCase())
             })
+
+    const toggleBtn = () => {
+        console.log(statusFilter);
+        if (statusFilter === 'open') {
+            setStatusFilter('close');
+            setBtnText('Close Tickets');
+            setBtnActive('bg-indigo-600 text-white border border-indigo-600');
+        } else {
+            setStatusFilter('open');
+            setBtnText('Open Tickets');
+            setBtnActive('bg-white text-indigo-600 border border-indigo-600');
+        }
+    }
+
+    useEffect(() => { pageHasChanged(); fetchStats(); }, [pageNumber]);
+    useEffect(() => { pageHasChanged(); fetchStats(); }, [statusFilter]);
+    useEffect(() => { pageHasChanged(); fetchStats(); }, [selectedPerson]);
+    useEffect(() => { console.log(statusFilter) }, [statusFilter]);
+
 
     return (
         <>
@@ -103,17 +105,10 @@ export default function Welcome({ users }) {
                         <div className="flex space-x-4">
                             <button
                                 type="button"
-                                onClick={() => setStatusFilter('open')}
-                                className="rounded-md bg-indigo-600 px-3 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                onClick={toggleBtn}
+                                className={`rounded-md border ${btnActive} px-3 py-1 text-sm font-semibold shadow-sm hover:bg-indigo-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                             >
-                                Open Tickets
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => setStatusFilter('close')}
-                                className="rounded-md bg-indigo-600 px-3 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            >
-                                Closed Tickets
+                                {btnText}
                             </button>
                         </div>
                         <Combobox
@@ -167,7 +162,7 @@ export default function Welcome({ users }) {
                     </div>
                     <div className="flex items-center gap-4 mx-6 mt-4 p-4 border rounded-md">
                         Filters:&nbsp;
-                            {selectedPerson.id > 0 ? selectedPerson.name : 'All Users'}&nbsp;
+                            {selectedPerson.id > 0 ? (<FilteredByUser user={selectedPerson} /> ) : ''}
                             {statusFilter === 'close' ? ( <Processed></Processed> ) : ( <Unprocessed></Unprocessed> )}
                     </div>
                     <DisplayTickets
