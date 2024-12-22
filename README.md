@@ -5,6 +5,7 @@ to follow there Challenge requirements. I have used the follow Tech stack to cre
 - Laravel 10
 - Laravel Sail
 - Inertia.js (React)
+- TailwindCss (+TailwindUI) (latest versions)
 - MySQL 8
 - Docker
 - PHP 8.3 (Laravel Sail)
