@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,13 +17,17 @@ class WelcomeController extends Controller
         $pageName = 'page';
         $page = $request->input('page', 1);
 
-        $tickets = Ticket::with(['user'])
-            ->where('status', false)
-            ->latest()
-            ->paginate($perPage, $columns, $pageName, $page);
+        $defaultOption = [
+            'id' => 0,
+            'name' => '-- Select User --',
+            'email' => '',
+        ];
+
+        $users = User::get(['id', 'name', 'email']);
+
 
         return Inertia::render('Welcome', [
-            'tickets' => $tickets,
+            'users' => array_merge([$defaultOption], $users->toArray()),
         ]);
     }
 }
