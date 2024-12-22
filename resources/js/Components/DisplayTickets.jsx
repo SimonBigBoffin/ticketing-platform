@@ -13,7 +13,7 @@ export default function DisplayTickets({ tickets, pageNumber, totalPages, curren
         if (pageNumber < totalPages) {
             pageNumber++;
         }
-        currentPage(pageNumber + 1);
+        currentPage(pageNumber);
     }
 
     const prevPage = (e) => {
