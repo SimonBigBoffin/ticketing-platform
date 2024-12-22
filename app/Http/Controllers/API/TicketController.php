@@ -18,15 +18,22 @@ class TicketController extends Controller
 
         $page = $request->input('page', 1);
         $statusFilter = $request->input('status_filter', 'open');
+        $userEmail = $request->input('email', '');
 
         if ($statusFilter == 'close') {
             $status = true;
         }
 
-        $tickets = Ticket::with(['user'])
-            ->where('status', $status)
-            ->latest()
-            ->paginate($perPage, $columns, $pageName, $page);
+        $query = Ticket::with(['user'])
+            ->where('status', $status);
+
+        if ($userEmail != '') {
+            $query->whereHas('user', function ($query) use ($userEmail) {
+                $query->where('email', $userEmail);
+            });
+        }
+
+        $tickets = $query->latest()->paginate($perPage, $columns, $pageName, $page);
 
         return response()->json($tickets);
     }
