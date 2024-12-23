@@ -17,7 +17,7 @@ to follow there Challenge requirements. I have used the follow Tech stack to cre
 
 ## Installation
 
-1. Setting up the project
+### Setting up the project
 ```
 git clone https://github.com/SimonBigBoffin/ticketing-platform.git
 cd ticketing-platform
@@ -27,11 +27,16 @@ cp .env.example .env
 
 ./vendor/bin/sail up -d
 ./vendor/bin/sail artisan key:generate
-./vendor/bin/sail artisan migrate --seed
+./vendor/bin/sail artisan migrate:refresh --seed
 ```
-2. Running the project
+
+### Running the project
 ```
-/vendor/bin/sail artisan schedule:work
+./vendor/bin/sail npm install
+./vendor/bin/sail npm run dev
+
+In another terminal, run the following command:
+./vendor/bin/sail artisan schedule:work
 ```
 
 ## ScreenShots
