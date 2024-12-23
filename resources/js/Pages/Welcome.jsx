@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import FilteredByUser from "@/Components/FilteredByUser.jsx";
 
 export default function Welcome({ users }) {
+    const [count, setCount] = useState(0);
     const [people, setPeople] = useState(users);
     const [tickets, setTickets] = useState([]);
     const [pageNumber, setPageNumber] = useState(1);
@@ -23,7 +24,7 @@ export default function Welcome({ users }) {
     // Stats
     const [totalTickets, setTotalTickets] = useState(0);
     const [unprocessedTickets, setUnprocessedTickets] = useState(0);
-    const [lastProcessed, setLastProcessed] = useState('00/00/00 00:00:00');
+    const [lastProcessed, setLastProcessed] = useState('No tickets processed');
     const [highestTicketUser, setHighestTicketUser] = useState('');
 
     const pageHasChanged = () => {
@@ -37,7 +38,6 @@ export default function Welcome({ users }) {
             .then((data) => {
                 setTickets(data);
                 setTotalPages(data?.last_page);
-                console.log(data);
             }).catch(err => {
                 console.error(err.toString());
             });
@@ -49,7 +49,11 @@ export default function Welcome({ users }) {
             .then((data) => {
                 setTotalTickets(data.total_tickets);
                 setUnprocessedTickets(data.unprocessed_tickets);
-                setLastProcessed(dayjs(data.last_ticket_processed.updated_at).format('DD/MM/YY HH:mm:ss'));
+                if (data.last_ticket_processed) {
+                    setLastProcessed(dayjs(data.last_ticket_processed.updated_at).format('DD/MM/YY HH:mm'));
+                } else {
+                    setLastProcessed('No tickets processed');
+                }
                 setHighestTicketUser(
                     data.highest_ticket_user.user.name +
                     ' (' + data.highest_ticket_user.user.email + ') with ' +
@@ -68,7 +72,6 @@ export default function Welcome({ users }) {
             })
 
     const toggleBtn = () => {
-        console.log(statusFilter);
         if (statusFilter === 'open') {
             setStatusFilter('close');
             setBtnText('Close Tickets');
@@ -80,11 +83,7 @@ export default function Welcome({ users }) {
         }
     }
 
-    useEffect(() => { pageHasChanged(); fetchStats(); }, [pageNumber]);
-    useEffect(() => { pageHasChanged(); fetchStats(); }, [statusFilter]);
-    useEffect(() => { pageHasChanged(); fetchStats(); }, [selectedPerson]);
-    useEffect(() => { console.log(statusFilter) }, [statusFilter]);
-
+    useEffect(() => { pageHasChanged(); fetchStats(); }, [pageNumber, selectedPerson, statusFilter]);
 
     return (
         <>
@@ -92,7 +91,7 @@ export default function Welcome({ users }) {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="mt-8">
-                    <h1 className="text-2xl font-bold text-center">Ticketing Platform</h1>
+                    <h1 className="text-2xl font-bold text-center">Ticketing Platform [{count}]</h1>
                     <div className="mt-4 mx-6 p-4 border rounded-md bg-gray-200">
                         <StatsBlock
                             totalTickets={totalTickets}

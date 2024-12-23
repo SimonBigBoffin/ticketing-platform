@@ -19,7 +19,7 @@ class ProcessTicket extends Command
      *
      * @var string
      */
-    protected $description = 'A simple command to process a ticket';
+    protected $description = 'A simple command to process a ticket every 5 minutes';
 
     /**
      * Execute the console command.
@@ -32,7 +32,6 @@ class ProcessTicket extends Command
         $this->info('Processing ticket: '.$ticket->user->email);
         $ticket->process();
         $this->info('Ticket processed successfully');
-        // Send an email to the user that the ticket has been processed
 
     }
 }
