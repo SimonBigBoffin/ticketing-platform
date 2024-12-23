@@ -91,7 +91,7 @@ export default function Welcome({ users }) {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="mt-8">
-                    <h1 className="text-2xl font-bold text-center">Ticketing Platform [{count}]</h1>
+                    <h1 className="text-2xl font-bold text-center">Ticketing Platform</h1>
                     <div className="mt-4 mx-6 p-4 border rounded-md bg-gray-200">
                         <StatsBlock
                             totalTickets={totalTickets}
