@@ -13,4 +13,11 @@ class TicketController extends Controller
             'ticket' => $ticket->load('user'),
         ]);
     }
+
+    public function close(Ticket $ticket)
+    {
+        $ticket->update(['status' => true]);
+
+        return redirect()->route('welcome');
+    }
 }

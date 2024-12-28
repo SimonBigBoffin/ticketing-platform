@@ -30,5 +30,15 @@ class DatabaseSeeder extends Seeder
 
         }
 
+        // Creat Admin use
+
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'),
+            'is_admin' => true,
+        ]);
+
     }
 }

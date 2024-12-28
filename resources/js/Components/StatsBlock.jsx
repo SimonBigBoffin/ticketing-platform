@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import {useEffect, useState} from "react";
+import {usePoll} from "@inertiajs/react";
 
 const stats = [
     { name: 'Total number of tickets', stat: '9999' },
@@ -7,7 +8,42 @@ const stats = [
     { name: 'Timestamp of the last ticket processed', stat: '00/00/00 00:00:00' },
 ]
 
-export default function StatsBlock({totalTickets, unprocessedTickets, lastProcessed, highestTicketUser}) {
+export default function StatsBlock() {
+    // Stats
+    const [totalTickets, setTotalTickets] = useState(0);
+    const [unprocessedTickets, setUnprocessedTickets] = useState(0);
+    const [lastProcessed, setLastProcessed] = useState('No tickets processed');
+    const [highestTicketUser, setHighestTicketUser] = useState('Processing - Please Wait ...');
+
+    const fetchStats = () => {
+        fetch("/api/stats")
+            .then((response) => response.json())
+            .then((data) => {
+                setTotalTickets(data.total_tickets);
+                setUnprocessedTickets(data.unprocessed_tickets);
+                if (data.last_ticket_processed) {
+                    setLastProcessed(dayjs(data.last_ticket_processed.updated_at).format('DD/MM/YY HH:mm'));
+                } else {
+                    setLastProcessed('No tickets processed');
+                }
+                setHighestTicketUser(
+                    data.highest_ticket_user.user.name +
+                    ' (' + data.highest_ticket_user.user.email + ') with ' +
+                    data.highest_ticket_user.total_tickets + ' tickets'
+                );
+            }).catch(err => {
+                console.error(err.toString());
+            });
+    }
+
+    useEffect(() => {
+        const timer = window.setInterval(() => {
+            fetchStats();
+        }, 1000);
+        return () => {
+            window.clearInterval(timer);
+        };
+    }, []);
 
     return (
         <div>

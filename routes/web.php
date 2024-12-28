@@ -19,6 +19,7 @@ use Inertia\Inertia;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
+Route::get('/ticket/{ticket}/close', [App\Http\Controllers\TicketController::class, 'close'])->name('ticket.close');
 Route::get('/ticket/{ticket}', [App\Http\Controllers\TicketController::class, 'show'])->name('ticket.show');
 
 Route::get('/dashboard', function () {
