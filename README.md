@@ -38,11 +38,23 @@ cp .env.example .env
 In another terminal, run the following command:
 ./vendor/bin/sail artisan schedule:work
 ```
+### Additional Features have been added
+There is a Admin Login/Logout at the top of the page, (see screenshot below) the following 
+Username (email) and Password, Admins can close ticket, see the close link in the Admin View
+```
+Email: admin@example.com
+Password: password
+```
 
 ## ScreenShots
 
-### Frontend (WelcomePage)
-![image](https://github.com/user-attachments/assets/7ecdaf4c-2bd2-4acf-8871-ae9a9211d64a)
+### Frontend (WelcomePage) Guest Access
+![image](https://github.com/user-attachments/assets/704e5066-1d97-46d0-859d-2fb6e0c94581)
+
+### Frontend (WelcomePage) Admin Access 
+![image](https://github.com/user-attachments/assets/d9a64ff5-7b37-44ce-923a-92beeba24fbb)
+
+
 ### Frontend (TicketPage)
 ![image](https://github.com/user-attachments/assets/92806457-4d63-4d40-9a81-4e9d48ea839c)
 ### Test Coverage
