@@ -49,7 +49,11 @@ Password: password
 ## ScreenShots
 
 ### Frontend (WelcomePage) Guest Access
+(showing unprocessed tickets)
+![image](https://github.com/user-attachments/assets/5fe507d8-2e4c-489b-a116-fac304c76e5d)
+(showing processed tickets)
 ![image](https://github.com/user-attachments/assets/704e5066-1d97-46d0-859d-2fb6e0c94581)
+
 
 ### Frontend (WelcomePage) Admin Access 
 ![image](https://github.com/user-attachments/assets/d9a64ff5-7b37-44ce-923a-92beeba24fbb)
